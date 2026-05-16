@@ -1,4 +1,4 @@
-
+```
 *A step-by-step guide to using this repository efficiently*
 
 
@@ -21,3 +21,4 @@ ansible -i inventory.ini webservers -m ping
 ansible-playbook -i inventory.ini nginx_setup.yml
 
 once done destroy the resource
+```
