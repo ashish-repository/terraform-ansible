@@ -15,8 +15,6 @@ terraform init
 terraform validate
 terraform plan
 terraform apply 
-you'll get ip in output copy ip and update in inventory.ini with REPLACE_WITH_TARGET_PUBLIC_IP (ansible_host) and nginx_setup.yml with REPLACE_WITH_TARGET_PUBLIC_IP (server_ip)
-
 ansible -i inventory.ini webservers -m ping
 ansible-playbook -i inventory.ini nginx_setup.yml
 
