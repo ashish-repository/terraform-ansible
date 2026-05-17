@@ -119,3 +119,20 @@ resource "aws_instance" "cloudops" {
     Name = "cloudops-ec2"
   }
 }
+
+# Automatically Generate Ansible Inventory
+
+resource "local_file" "ansible_inventory" {
+
+  filename = "/root/terraform-project/inventory.ini"
+
+  content = <<EOT
+[webservers:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=/root/terraform-project/devops-key
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[webservers]
+Cloudops-server ansible_host=${aws_instance.cloudops.public_ip}
+EOT
+}

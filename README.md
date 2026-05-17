@@ -8,7 +8,7 @@ create a directory terraform-project
 cd terraform-project
 git clone https://github.com/ashish-repository/terraform-ansible.git
 configure aws CLI
-asw configure
+aws configure
 ssh-keygen -t rsa -b 4096 -f devops-key
 chmod 400 /root/terraform-project/devops-key
 terraform init

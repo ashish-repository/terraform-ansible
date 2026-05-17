@@ -6,7 +6,7 @@
   vars:
     ssl_cert_path: /etc/ssl/certs/ec2.crt
     ssl_key_path: /etc/ssl/private/ec2.key
-    server_ip: REPLACE_WITH_TARGET_PUBLIC_IP
+    server_ip: "{{ ansible_host }}"
 
   tasks:
     - name: Install Nginx
@@ -53,20 +53,32 @@
         selfsigned_not_after: "+365d"
         attributes: ""
 
-    - name: Configure Nginx for HTTPS
+    - name: Configure Nginx for HTTP and HTTPS
       copy:
         dest: /etc/nginx/nginx.conf
         content: |
           events {}
+
           http {
+
               server {
+
+                  listen 80;
+
+                  return 301 https://$host$request_uri;
+              }
+
+              server {
+
                   listen 443 ssl;
+
                   server_name {{ server_ip }};
 
                   ssl_certificate {{ ssl_cert_path }};
                   ssl_certificate_key {{ ssl_key_path }};
 
                   location / {
+
                       root /usr/share/nginx/html;
                       index index.html;
                   }
@@ -78,8 +90,8 @@
       register: nginx_test
       ignore_errors: yes
 
-    - name: Enable and start Nginx
+    - name: Restart and enable Nginx
       service:
         name: nginx
-        state: started
+        state: restarted
         enabled: yes
